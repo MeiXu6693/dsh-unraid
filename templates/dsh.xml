@@ -29,14 +29,14 @@
 **为什么用这个镜像**
 - 自动跟随上游：镜像每天检查上游版本，一有新版本就构建、冒烟测试并推送；你只要在 Docker 页点一次更新，不用改任何配置。
 - 命令沙箱真的能用：Unraid 内核没有启用 Landlock，DSH 的沙箱只剩 bubblewrap 一条腿。镜像内置 bubblewrap，模板默认带上它需要的两个启动参数，因此工具不会因为缺少沙箱而拒绝执行。
-- 以非 root 身份运行（PUID / PGID，默认 99:100；UMASK 022）、多架构（amd64 / arm64）、**默认开启内置口令门禁**：不填 **Password** 字段时容器会随机生成一个并打印在启动日志里（Docker 页 → 该容器 → Logs）。若前面已有反向代理 / SSO 做认证，把 **Authentication Mode** 改为 none。
+- 以非 root 身份运行（PUID / PGID，默认 99:100；UMASK 022）、多架构（amd64 / arm64）、**默认开启内置口令门禁**：`Authentication Mode=builtin` 时必须提供 **Password**；模板自带默认值 12345678，请第一时间改掉。若前面已有反向代理 / SSO 做认证，把 **Authentication Mode** 改为 none，这时用户名/口令都不需要。
 
 **整体方案**：容器内置 Caddy 反向代理——对外只开你发布的那个端口，DSH 自身只监听回环，安全响应头、Host/Origin 校验与 `ALLOWED_CLIENTS` 白名单都在这一层完成。认证是可选的：默认 `builtin` 会像 Basic Auth 一样要一次口令（之后用 Cookie 保持，含 WebSocket 握手），设为 `none` 则交给前面的反向代理或 SSO——**不要叠两层登录**。容器以非 root 身份运行，不挂 docker socket，除你映射的两个卷外不碰宿主目录。
 
 **运行身份（PUID / PGID / UMASK）**：非 root 运行，身份由 **PUID** / **PGID** 决定，模板默认 **99:100**（Unraid 的 `nobody:users`）与 **UMASK=022**；compose / 通用部署可用 1000:1000。容器每次启动都会把 /data、/workspace 与 HOME 交给这对值，改完重启即可。
 
 **三步开始**
-1. 安装并打开 http://&lt;你的服务器IP&gt;:8080 ：浏览器先弹出登录框，用户名 dsh，口令是 **Password** 字段的值——**模板自带默认值 12345678，请第一时间改成只有你知道的口令**（Docker 页 → 该容器 → Edit → 改 Password → Apply）。在改掉之前，同网络里知道这个公开默认值的人都能操作你的智能体。顺带说明：用户名字段默认 dsh，也可自行修改。登录后会自动完成令牌引导。想用随机口令而不是默认值，就改用 CLI 传 `-e DSH_PASSWORD=`（口令会打印在日志里，Docker 页 → 该容器 → Logs 找 GENERATED PASSWORD）。
+1. 安装并打开 http://&lt;你的服务器IP&gt;:8080 ：浏览器先弹出登录框，用户名 dsh，口令是 **Password** 字段的值——**模板自带默认值 12345678，请第一时间改成只有你知道的口令**（Docker 页 → 该容器 → Edit → 改 Password → Apply）。在改掉之前，同网络里知道这个公开默认值的人都能操作你的智能体。顺带说明：用户名字段默认 dsh，也可自行修改。登录后会自动完成令牌引导。口令至少 8 位；builtin 下没有口令容器会拒绝启动（模板的默认值 12345678 会一直提供，所以装完先改它）。
 2. 状态与项目分别放在 /data 与 /workspace（默认映射到 appdata/dsh/...），升级容器不会丢会话。
 3. 放在反向代理之后时，把 PUBLIC_URL 设为对外地址（例如 https://dsh.example.com），容器就只接受该来源的请求；纯内网可留空。**若该代理本身已经做了认证（如 SWAG + Authelia），请把 **Authentication Mode** 改成 none**，否则会连着弹两次登录框。
 
@@ -57,14 +57,14 @@ DSH (DeepSeek Harness) is an open-source coding agent whose interface is a brows
 **Why this image**
 - Automatic updates: a daily upstream check rebuilds, smoke-tests and publishes whenever a new version lands. You just hit update in the Docker tab.
 - A command sandbox that actually works: Unraid kernels ship without Landlock, which leaves bubblewrap as the only rung for DSH's sandbox. bubblewrap is bundled and the template carries the two launch options it needs, so commands never refuse to run for lack of isolation.
-- Runs as non-root (PUID / PGID, default 99:100; UMASK 022), multi-arch (amd64 / arm64), and **serves its own password gate by default**: leave **Password** empty and the container generates one and prints it once in the startup log (Docker tab -> the container -> Logs). If a reverse proxy or SSO already authenticates, set **Authentication Mode** to none.
+- Runs as non-root (PUID / PGID, default 99:100; UMASK 022), multi-arch (amd64 / arm64), and **serves its own password gate by default**: `Authentication Mode=builtin` requires a **Password**; the template ships 12345678 as its default — change it. If a reverse proxy or SSO already authenticates, set **Authentication Mode** to none and leave username/password alone.
 
 **How it is put together**: the container bundles Caddy as its reverse proxy — the port you publish is the only way in, DSH itself listens on loopback only, and the security headers, host/origin checks and the `ALLOWED_CLIENTS` allowlist all happen at that layer. Authentication is optional: `builtin` (the default) asks for a password once, like basic auth, and then keeps you signed in with a cookie that also covers the WebSocket handshake; `none` hands that job to your own reverse proxy or SSO — do not stack two logins. The container runs unprivileged, mounts no docker socket, and touches no host directory beyond the two volumes you map.
 
 **The identity it runs as (PUID / PGID / UMASK)**: it runs unprivileged, as the **PUID** / **PGID** the template sets; the Unraid defaults are **99:100** (`nobody:users`) with **UMASK=022** (use 1000:1000 for compose or generic deployments). At every start the container hands /data, /workspace and HOME over to that pair, so a change needs only a restart.
 
 **Get started in three steps**
-1. Install, then open http://&lt;your-server&gt;:8080 — the browser asks for a login first: user dsh, password from the **Password** field (`DSH_PASSWORD`). **The template ships 12345678 as a default: change it to something only you know before you go further** (Docker tab -> the container -> Edit -> Password -> Apply). Until you do, anybody on your network who knows this public default can drive the agent. The user name field defaults to dsh and can be changed. The token bootstrap then completes automatically. If you prefer a random password over the default, run the container from the CLI with an explicitly empty `-e DSH_PASSWORD=` instead (it is printed once in the log: Docker tab -> the container -> Logs, look for GENERATED PASSWORD).
+1. Install, then open http://&lt;your-server&gt;:8080 — the browser asks for a login first: user dsh, password from the **Password** field (`DSH_PASSWORD`). **The template ships 12345678 as a default: change it to something only you know before you go further** (Docker tab -> the container -> Edit -> Password -> Apply). Until you do, anybody on your network who knows this public default can drive the agent. The user name field defaults to dsh and can be changed. The token bootstrap then completes automatically. The password must be at least 8 characters; builtin mode without a password refuses to start (the template default 12345678 is always supplied, so change it).
 2. State and projects live in /data and /workspace (mapped to appdata/dsh/... by default), so upgrading the container keeps your sessions.
 3. Behind a reverse proxy, set PUBLIC_URL to the public origin (for example https://dsh.example.com) so the container only answers for that authority; leave it empty on a trusted LAN. If that proxy already authenticates (SWAG + Authelia, Authentik, ...), also set **Authentication Mode** (`AUTH_MODE`) to none so the browser is not asked to log in twice.
 

@@ -37,7 +37,7 @@
 
 ## 头五分钟
 
-1. **先改口令。** 模板自带 `12345678`，这是公开值：Docker 页 → 该容器 → *Edit* → **Password** → Apply。（留空则由容器首启随机生成并只在日志里打印一次：`docker logs <容器名>`。）
+1. **先改口令。** 模板自带 `12345678`，这是公开值：Docker 页 → 该容器 → *Edit* → **Password** → Apply。（模板会一直提供默认值 `12345678`；builtin 模式下没有口令容器会拒绝启动。）
 2. **指向你的项目。** 智能体在 `/workspace` 里干活（默认 `appdata/dsh/workspace`）。
 3. **填 DeepSeek API Key**：设置面板里的 *Add API key*。用 DeepSeek **账号**登录从任何浏览器也能完成：登录标签页停在打不开的 `127.0.0.1` 页面时，页面里会自动出现粘贴框——详见镜像仓库的 [docs/remote-signin.zh-CN.md](https://github.com/MeiXu6693/dsh-docker/blob/main/docs/remote-signin.zh-CN.md)。
 
