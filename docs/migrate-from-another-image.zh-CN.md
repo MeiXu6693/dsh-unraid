@@ -12,7 +12,7 @@
    - 改反代的上游指向，然后 `docker exec <proxy> nginx -t && docker exec <proxy> nginx -s reload`；
    - 或者新建容器时把 `<Name>` 手动改成 `<old-container>`，反代就完全不用动。
    > 反代与容器必须在同一个 docker 网络上，否则容器名解析不了。
-2. **数据可以原地复用**。本模板默认把 `/data` 指到 `/mnt/user/appdata/dsh/data`；若你原来的数据在别处（例如 `<appdata>/data`），**把模板里两个 Path 改回旧路径即可**，会话与凭据原样保留。想用新路径就 `mv` 过去，并保持属主为 `1000:1000`（容器以该 uid 运行，除非你设了 `PUID`/`PGID`）。
+2. **数据可以原地复用**。本模板默认把 `/data` 指到 `/mnt/user/appdata/dsh/data`；若你原来的数据在别处（例如 `<appdata>/data`），**把模板里两个 Path 改回旧路径即可**，会话与凭据原样保留。想用新路径就 `mv` 过去，并保持属主为你设置的 `PUID`/`PGID`（Unraid 默认 `99:100`，compose 用 `1000:1000`）。
 3. **切换会中断正在进行的会话**。停掉旧容器 = 浏览器断线。建议先并行起一个新容器验证，确认无误再切端口与反代，最后删旧容器——**不要**在当前会话里直接 `docker rm -f <old-container>`，用脱离会话的方式或由 GUI 操作。
 
 ## 迁移步骤（最小中断）

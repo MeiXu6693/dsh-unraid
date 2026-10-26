@@ -79,7 +79,7 @@ The "prove repository ownership" step requires you to place a `.unraid/community
 | `<Overview>` / `<Description>` | bilingual (Chinese and English) | ⚠️ gets pinned at the moment the user installs, so do not write information that will go stale (see ca-pitfalls.md B2) |
 | `<ExtraParams>` | the two `--security-opt` | **do not delete**; delete them and the bash tool is dead |
 | `<WebUI>` | `http://[IP]:[PORT:8080]/` | consistent with the port Config |
-| Volumes | `/data`, `/workspace` → `appdata/dsh/...` | first start hands them to `PUID:PGID` (`1000:1000` by default, `99:100` on Unraid) |
+| Volumes | `/data`, `/workspace` → `appdata/dsh/...` | first start hands them to `PUID:PGID` (`99:100` on Unraid, `1000:1000` for compose) |
 | `<Support>` | [forum support thread](https://forums.unraid.net/topic/200908-support-dsh-deepseek-harness-ai-coding-agent-in-your-browser/) | ✅ replaced (published 2026-10-15 under Community → Docker Containers) |
 | `<TemplateURL>` | the raw template URL on the repository's `main` | officially marked recommended (used for identity and review) |
 | `<ReadMe>` | points via the proxy to the repository README | the starter carries this field; the Unraid detail page displays it |
