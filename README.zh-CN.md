@@ -45,7 +45,7 @@
 
 每个变量的完整说明（以及它背后的安全模型）见项目文档：[设置与环境变量](https://github.com/MeiXu6693/dsh-docker/blob/main/README.zh-CN.md#可能会用到的设置) 与 [安全模型](https://github.com/MeiXu6693/dsh-docker/blob/main/docs/security.zh-CN.md)。
 
-**PUID、PGID、UMASK、数据目录以及代理/登录细节在「显示更多设置」里**——默认安装显示端口、用户名、口令和工作目录。
+**PUID、PGID、UMASK、数据目录以及代理/登录细节在「显示更多设置」里**——默认安装显示端口、用户名、口令、认证方式和工作目录。
 
 | 字段 | 默认 | 作用 |
 |---|---|---|
