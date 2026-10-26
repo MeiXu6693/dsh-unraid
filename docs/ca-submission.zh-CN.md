@@ -79,7 +79,7 @@ CA 与模板指南都要求：**你自己维护的容器必须有 Unraid 论坛�
 | `<Overview>` / `<Description>` | 中英双语 | ⚠️ 会被钉在用户安装那一刻，别写过期信息（见 ca-pitfalls.md B2） |
 | `<ExtraParams>` | 两个 `--security-opt` | **不要删**，删了 bash 工具就废 |
 | `<WebUI>` | `http://[IP]:[PORT:8080]/` | 与端口 Config 一致 |
-| 卷 | `/data`、`/workspace` → `appdata/dsh/...` | 首次启动会把属主交给 `PUID:PGID`（默认 `1000:1000`，Unraid 上是 `99:100`） |
+| 卷 | `/data`、`/workspace` → `appdata/dsh/...` | 首次启动会把属主交给 `PUID:PGID`（Unraid 默认 `99:100`，compose 用 `1000:1000`） |
 | `<Support>` | [论坛支持帖](https://forums.unraid.net/topic/200908-support-dsh-deepseek-harness-ai-coding-agent-in-your-browser/) | ✅ 已替换（2026-10-15 发布在 Community → Docker Containers） |
 | `<TemplateURL>` | 仓库 `main` 的 raw 模板地址 | 官方标为 recommended（identity and review 用） |
 | `<ReadMe>` | 经代理指向仓库 README | starter 里带这个字段，Unraid 详情页会展示 |

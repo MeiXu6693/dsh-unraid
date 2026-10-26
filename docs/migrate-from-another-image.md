@@ -12,7 +12,7 @@ The placeholders below stand for your own environment: `<old-container>` = the e
    - Point the reverse proxy upstream at the new name, then `docker exec <proxy> nginx -t && docker exec <proxy> nginx -s reload`;
    - or set `<Name>` to `<old-container>` by hand when creating the new container, and the reverse proxy needs no changes at all.
    > The reverse proxy and the container must be on the same docker network, otherwise the container name will not resolve.
-2. **Data can be reused in place.** This template points `/data` at `/mnt/user/appdata/dsh/data` by default; if your existing data is elsewhere (for example `<appdata>/data`), **point the template's two Path fields back at the old paths** and your sessions and credentials carry over unchanged. If you want the new paths, `mv` the data over and keep the owner at `1000:1000` (the container runs as that uid unless you set `PUID`/`PGID`).
+2. **Data can be reused in place.** This template points `/data` at `/mnt/user/appdata/dsh/data` by default; if your existing data is elsewhere (for example `<appdata>/data`), **point the template's two Path fields back at the old paths** and your sessions and credentials carry over unchanged. If you want the new paths, `mv` the data over and keep the owner at the `PUID`/`PGID` you set (`99:100` on Unraid, `1000:1000` for compose).
 3. **Cutting over interrupts a session in progress.** Stopping the old container = the browser drops the connection. Start a new container alongside first and verify it, then switch the port and the reverse proxy, and delete the old container last — do **not** run `docker rm -f <old-container>` from inside the current session; use something detached from the session, or the GUI.
 
 ## Migration steps (minimal downtime)

@@ -45,12 +45,15 @@
 
 每个变量的完整说明（以及它背后的安全模型）见项目文档：[设置与环境变量](https://github.com/MeiXu6693/dsh-docker/blob/main/README.zh-CN.md#可能会用到的设置) 与 [安全模型](https://github.com/MeiXu6693/dsh-docker/blob/main/docs/security.zh-CN.md)。
 
+**PUID、PGID、UMASK、两个路径以及网络/认证细节都在「显示更多设置」里**——默认安装只填端口和口令。
+
 | 字段 | 默认 | 作用 |
 |---|---|---|
 | WebUI Port | `0.0.0.0:8080` | 宿主侧绑定。**必须写成 `IP:端口`**——Unraid 会把裸端口号误解析成 IP，容器会卡在 `Created`。 |
 | Data Directory | `/mnt/user/appdata/dsh/data` | `DSH_HOME`：会话、凭据、智能体主目录、Caddy 状态。必须持久化。 |
 | Workspace Directory | `/mnt/user/appdata/dsh/workspace` | 智能体的工作目录。 |
-| PUID / PGID | `1000` / `1000` | DSH 及其派生的所有进程以哪个 uid/gid 运行。**Unraid 上请填 `99` / `100`**——appdata 的属主通常是 `nobody:users`；`1000:1000` 是 compose / 通用部署的默认值。容器每次启动都会把 `/data` 与 `/workspace` 的属主交给这对值，所以改完重启即可。 |
+| PUID / PGID | `99` / `100` | DSH 及其派生的所有进程以哪个 uid/gid 运行。Unraid 的 appdata 属主通常是 `nobody:users`，所以模板默认 `99` / `100`；compose / 通用部署可用 `1000` / `1000`。容器每次启动都会把 `/data`、`/workspace` 与 HOME 的属主交给这对值，改完重启即可。 |
+| UMASK | `022` | 新建文件的权限掩码（文件 `644`、目录 `755`）。`002` 会让新文件同组可写；不要用 `000`。 |
 | Allowed Clients | 私有网段 + Tailscale | 谁能访问界面。想收紧就删掉多余网段；**镜像自身的默认值是仅回环**。 |
 | Username / Password | `dsh` / `12345678` | 容器自带门禁的账号口令。**务必改掉口令。** |
 | Authentication Mode | `builtin` | `builtin` = 容器自带口令门禁；`none` = 交给前面的反向代理 / SSO（别叠两层登录）。 |
@@ -92,7 +95,7 @@ docker exec -u <PUID> <容器名> dsh plugin --profile web add @scope/some-plugi
 docker exec -u <PUID> <容器名> dsh plugin --profile web add github:owner/repo
 ```
 
-装完请重启容器，让 profile 重新组合。务必带 `-u <PUID>`——就是模板里设的那个 uid（默认 `1000`，Unraid 上是 `99`）：用 root 装，包在 appdata 里属 root，之后以该 PUID 运行的 DSH 就读不到了。如果插件还要调自己的命令行工具，那个工具也得装在数据目录下——镜像 README 写了它在每次启动时会扫的两种布局：[自己装命令行工具](https://github.com/MeiXu6693/dsh-docker/blob/main/README.zh-CN.md#自己装命令行工具)。
+装完请重启容器，让 profile 重新组合。务必带 `-u <PUID>`——就是模板里设的那个 uid（Unraid 默认 `99`，compose 用 `1000`）：用 root 装，包在 appdata 里属 root，之后以该 PUID 运行的 DSH 就读不到了。如果插件还要调自己的命令行工具，那个工具也得装在数据目录下——镜像 README 写了它在每次启动时会扫的两种布局：[自己装命令行工具](https://github.com/MeiXu6693/dsh-docker/blob/main/README.zh-CN.md#自己装命令行工具)。
 
 远程登录插件已经在镜像里且默认开启——这一节是给你自己加别的东西用的。
 
@@ -100,7 +103,7 @@ docker exec -u <PUID> <容器名> dsh plugin --profile web add github:owner/repo
 
 | 现象 | 处理 |
 |---|---|
-| 工具报 `SANDBOX_UNAVAILABLE` | **Extra Parameters** 里的两个 `--security-opt` 被删了，补回去。自查时注意：`systempaths=unconfined` **不会**出现在 `docker inspect` 的 `SecurityOpt` 里（它表现为 `MaskedPaths`/`ReadonlyPaths` 变空），而 bwrap **只在非 root 的 uid 下可用**——用 `docker exec -u <PUID> <容器> bwrap --ro-bind / / --dev /dev --unshare-pid --proc /proc --die-with-parent -- true` 测（`<PUID>` 就是模板里的 PUID：默认 `1000`，Unraid 上是 `99`），必须 exit 0。用 root 测必然失败，那不能说明容器有问题。 |
+| 工具报 `SANDBOX_UNAVAILABLE` | **Extra Parameters** 里的两个 `--security-opt` 被删了，补回去。自查时注意：`systempaths=unconfined` **不会**出现在 `docker inspect` 的 `SecurityOpt` 里（它表现为 `MaskedPaths`/`ReadonlyPaths` 变空），而 bwrap **只在非 root 的 uid 下可用**——用 `docker exec -u <PUID> <容器> bwrap --ro-bind / / --dev /dev --unshare-pid --proc /proc --die-with-parent -- true` 测（`<PUID>` 就是模板里的 PUID：Unraid 默认 `99`，compose 用 `1000`），必须 exit 0。用 root 测必然失败，那不能说明容器有问题。 |
 | 浏览器拿到 `403` | 你的地址不在 **Allowed Clients** 里。 |
 | 页面提示 “dsh web authentication required; reopen the URL printed by dsh web” | **刷新页面即可**——容器会自己把失效的会话 Cookie 换新（也可手动打开 `http://<主机>:<端口>/renew`）。 |
 | 更新了却没变化 | Unraid 只在镜像 digest 变化时重建容器——用 **force update**。 |

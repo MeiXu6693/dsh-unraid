@@ -53,12 +53,15 @@
 
 Full descriptions of every variable — and of the security model behind them — are in the project documentation: [settings and environment variables](https://github.com/MeiXu6693/dsh-docker#settings-you-may-need) and [the security model](https://github.com/MeiXu6693/dsh-docker/blob/main/docs/security.md).
 
+**PUID, PGID, UMASK, the two paths and the network/auth details are under "Show more settings"** — the default install only asks for the port and password.
+
 | Field | Default | What it does |
 |---|---|---|
 | WebUI Port | `0.0.0.0:8080` | Host-side binding. **It must be written as `IP:port`** — Unraid mis-parses a bare port number as an IP and the container stays in `Created`. |
 | Data Directory | `/mnt/user/appdata/dsh/data` | `DSH_HOME`: sessions, credentials, agent home, Caddy state. Must be persistent. |
 | Workspace Directory | `/mnt/user/appdata/dsh/workspace` | The agent's working directory. |
-| PUID / PGID | `1000` / `1000` | The uid/gid DSH and everything it spawns run as. **On Unraid set `99` / `100`** — appdata is normally owned by `nobody:users`; `1000:1000` is the compose/generic default. The container hands `/data` and `/workspace` over to this pair at every start, so a change needs only a restart. |
+| PUID / PGID | `99` / `100` | The uid/gid DSH and everything it spawns run as. Unraid appdata is normally owned by `nobody:users`, so the template defaults to `99` / `100`; compose/generic deployments can use `1000` / `1000`. The container hands `/data`, `/workspace` and HOME over to this pair at every start, so a change needs only a restart. |
+| UMASK | `022` | File mode creation mask for new files (`644` files, `755` directories). `002` makes new files group-writable; do not use `000`. |
 | Allowed Clients | private ranges + Tailscale | Who may reach the UI at all. Narrow it to your own network if you like; the image's own default is loopback only. |
 | Username / Password | `dsh` / `12345678` | The container's built-in gate. **Change the password.** |
 | Authentication Mode | `builtin` | `builtin` = the container's own password gate; `none` = an authenticating proxy or SSO in front (do not stack two logins). |
@@ -106,7 +109,7 @@ docker exec -u <PUID> <container> dsh plugin --profile web add github:owner/repo
 ```
 
 Restart the container afterwards so the profile is composed again. Use `-u <PUID>` — the
-same uid you set in the template (`1000` by default, `99` on Unraid): as root the package
+same uid you set in the template (`99` on Unraid by default, `1000` for compose): as root the package
 ends up owned by root inside your appdata directory, and DSH — which runs as that PUID —
 can no longer read it. A plugin that shells out to its own command-line tool
 needs that tool under the data directory as well; the image README documents the two
@@ -120,7 +123,7 @@ everything else you want to add.
 
 | Symptom | Fix |
 |---|---|
-| A tool reports `SANDBOX_UNAVAILABLE` | The two `--security-opt` values were removed from **Extra Parameters**. Put them back. When you check: `systempaths=unconfined` never appears in `docker inspect`'s `SecurityOpt` (it shows up as empty `MaskedPaths`/`ReadonlyPaths`), and bwrap only works as a **non-root uid** — test with `docker exec -u <PUID> <container> bwrap --ro-bind / / --dev /dev --unshare-pid --proc /proc --die-with-parent -- true` (`<PUID>` = the template's PUID: `1000` by default, `99` on Unraid), which must exit 0. Run as root it always fails, which says nothing about the container. |
+| A tool reports `SANDBOX_UNAVAILABLE` | The two `--security-opt` values were removed from **Extra Parameters**. Put them back. When you check: `systempaths=unconfined` never appears in `docker inspect`'s `SecurityOpt` (it shows up as empty `MaskedPaths`/`ReadonlyPaths`), and bwrap only works as a **non-root uid** — test with `docker exec -u <PUID> <container> bwrap --ro-bind / / --dev /dev --unshare-pid --proc /proc --die-with-parent -- true` (`<PUID>` = the template.s PUID: `99` on Unraid by default, `1000` for compose), which must exit 0. Run as root it always fails, which says nothing about the container. |
 | The browser gets `403` | Your address is not in **Allowed Clients**. |
 | “dsh web authentication required; reopen the URL printed by dsh web” | **Just reload the page** — the container renews a stale session cookie by itself (also possible by hand: `http://<host>:<port>/renew`). |
 | Updated, but nothing changed | Unraid recreates a container only when the image digest changes — use **force update**. |
