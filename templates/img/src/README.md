@@ -13,7 +13,7 @@
 
 This repository is a **community packaging** effort and is **not affiliated with, partnered with, or authorized by** either DeepSeek (深度求索) or Lime Technology (Unraid). The icon places the two upstream marks side by side purely to say "what this app is and what platform it runs on"; it does not represent endorsement by either party.
 
-The official DSH [brand asset usage guidelines](https://github.com/deepseek-ai/deepseek-harness/blob/master/BRAND_GUIDELINES.zh.md) require that: descriptive text may truthfully explain the relationship to DeepSeek Harness, but the **project name** should use the abbreviation **DSH**, avoiding direct use of the full trademark. This repository is therefore named `dsh-unraid` / `dsh`, and "DeepSeek Harness" appears only in descriptions.
+The official DSH [brand asset usage guidelines](https://github.com/deepseek-ai/deepseek-harness/blob/master/BRAND_GUIDELINES.zh.md) require that: descriptive text may truthfully explain the relationship to DeepSeek Harness, but the **project name** should use the abbreviation **DSH**, avoiding direct use of the full trademark. The template (and the app entry it installs) is therefore named `dsh`; the repository is the neutral template library `unraid-templates`, and "DeepSeek Harness" appears only in descriptions.
 
 If either party asks for an adjustment, replace these two files and re-run `node scripts/make-icon.mjs`.
 

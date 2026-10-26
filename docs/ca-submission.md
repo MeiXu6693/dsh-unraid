@@ -1,14 +1,14 @@
 **English** · [中文](ca-submission.zh-CN.md)
 
-# Submitting the template to Unraid Community Applications
+# Submitting a template to Unraid Community Applications
 
-**Status: listed.** The template was submitted and is live in the catalogue since 2026-10-15 (verified against the feed Community Applications actually serves: one `DSH` entry, parsed from `templates/dsh.xml` on `main`). The checklist below is kept for the next submission — a fork, a new repository, or a re-submission after the entry is ever delisted. **While an entry is live you do not re-run the flow to publish template changes:** `/submit/new` answers "already enabled in Community Applications and does not need to be submitted", and CA re-parses the repository by itself on the next feed rebuild — measured 2026-10-16: template pushed 02:00 CST, live in the feed 04:11 CST, no manual scan (the two feed builds were ~4 h apart).
+**Status: the repository is listed; DSH is its first app.** DSH has been live in the catalogue since 2026-10-15 (verified against the feed Community Applications actually serves: one `DSH` entry, parsed from `templates/dsh.xml` on `main`). This repository is a **template library**: CA prefers one template repository per unraid.net account, so a new app is added as `templates/<app>.xml` and appears on the next feed rebuild — it is **not** submitted as a second repository. The checklist below is kept for a fork or a re-submission after the entry is ever delisted. **While an entry is live you do not re-run the flow to publish template changes:** `/submit/new` answers "already enabled in Community Applications and does not need to be submitted", and CA re-parses the repository by itself on the next feed rebuild — measured 2026-10-16: template pushed 02:00 CST, live in the feed 04:11 CST, no manual scan (the two feed builds were ~4 h apart).
 
 For maintainers of this repository (the same applies after a fork). **Read [ca-pitfalls.md](ca-pitfalls.md) first**: that is the pitfall list compiled from the official documentation + forum evidence, including real consequences such as "a declaration that does not match reality gets you delisted", "template changes do not flow back to machines that already installed it", and "deprecation means losing security updates". This document only covers the order of operations.
 
 ## 1. Official hard requirements (missing one leaves you stuck at the submission step)
 
-| Requirement | Basis | Status in this repository |
+| Requirement | Basis | Status in this library |
 |---|---|---|
 | Repository **public and active** | Submit → Docs → Submission Help | ✅ |
 | **OSI-approved license** at the root | Same as above | ✅ MIT |

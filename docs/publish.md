@@ -1,16 +1,17 @@
 **English** · [中文](publish.zh-CN.md)
 
-# Publishing this template (and forking the whole thing)
+# Publishing a template from this library (and forking the whole thing)
 
-This repository is the **Unraid side** of DSH: the Community Applications template plus
-the checks and documentation around it. The container image is built, smoke-tested and
-published by [MeiXu6693/dsh-docker](https://github.com/MeiXu6693/dsh-docker) — there is
-no Dockerfile here and this repository produces no releases or image tags. (The two
-Releases left over from the pre-2026-10-16 publishing chain were deleted on 2026-10-17,
+This repository is **MeiXu's Unraid template library**: one Community Applications
+template per app under `templates/`, plus the CA repository profile, the checks and the
+documentation around them. It currently ships DSH only. The container image is built,
+smoke-tested and published by [MeiXu6693/dsh-docker](https://github.com/MeiXu6693/dsh-docker)
+— there is no Dockerfile here and this repository produces no releases or image tags. (The
+two Releases left over from the pre-2026-10-16 publishing chain were deleted on 2026-10-17,
 so the Releases page being empty is the intended state and not an abandoned project —
 see the image repository's [releases](https://github.com/MeiXu6693/dsh-docker/releases).)
 
-This document is the runbook for a fork, and for the maintainer's own changes to the
+This document is the runbook for a fork, and for the maintainer's own changes to a
 template.
 
 ## 1. Fork: what you have to change

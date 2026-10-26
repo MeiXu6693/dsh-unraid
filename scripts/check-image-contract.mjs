@@ -3,7 +3,7 @@
  * Cross-repository check: does the template still describe the image it installs?
  *
  * The template and the image now live in two repositories
- * (MeiXu6693/dsh-unraid and MeiXu6693/dsh-docker). The contract between them is
+ * (MeiXu6693/unraid-templates and MeiXu6693/dsh-docker). The contract between them is
  * small but silently breakable: every `<Config Type="Variable" Target="NAME">` in
  * the template is an environment variable that the image's entrypoint has to
  * understand. Rename one on the image side and the template keeps handing the

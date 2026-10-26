@@ -14,7 +14,7 @@
  *
  * Usage:
  *   node scripts/render-template.mjs --owner=meixu --tag=0.2.1-alpha.3 \
- *     --version=0.2.1-alpha.3 --repo=dsh-unraid --out=dist/dsh.xml
+ *     --version=0.2.1-alpha.3 --repo=unraid-templates --out=dist/dsh.xml
  */
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
@@ -29,7 +29,7 @@ const flag = (name, fallback) => {
 }
 
 const owner = flag('owner', process.env.GITHUB_REPOSITORY_OWNER ?? '')
-const repo = flag('repo', process.env.GITHUB_REPOSITORY?.split('/')[1] ?? 'dsh-unraid')
+const repo = flag('repo', process.env.GITHUB_REPOSITORY?.split('/')[1] ?? 'unraid-templates')
 const tag = flag('tag', 'latest')
 const version = flag('version', tag)
 const source = resolve(flag('template', 'templates/dsh.xml'))
