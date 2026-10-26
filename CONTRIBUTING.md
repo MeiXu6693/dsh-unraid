@@ -2,21 +2,21 @@
 
 # Maintainer handbook — the Unraid side
 
-This repository owns the **Community Applications template** for DSH and nothing else:
-`templates/dsh.xml`, the icon, the CA repository profile, the CA documentation and the
-scripts that check them. The container image is built and published by
-[MeiXu6693/dsh-docker](https://github.com/MeiXu6693/dsh-docker); the template installs
-that image's `:latest` tag.
+This repository is **MeiXu's Unraid template library**: one Community Applications
+template per app under `templates/`, plus the CA repository profile, the documentation and
+the scripts that check them. It currently ships DSH only. The container image is built
+and published by [MeiXu6693/dsh-docker](https://github.com/MeiXu6693/dsh-docker);
+`templates/dsh.xml` installs that image's `:latest` tag.
 
 ## Repository layout
 
 ```
 .
-├── templates/dsh.xml          # the file Community Applications parses (already rendered)
-├── templates/img/dsh.png      # the icon the template and CA show
+├── templates/dsh.xml          # one XML per app; the file Community Applications parses (already rendered)
+├── templates/img/dsh.png      # per-app icon the template and CA show
 ├── templates/img/src/         # source assets + the trademark note
-├── icon.svg                   # repository icon (CA layout requirement; ca_profile.xml points at it)
-├── ca_profile.xml             # CA repository info — a non-empty <Profile> is a hard submission gate
+├── icon.svg                   # library icon (CA layout requirement; ca_profile.xml points at it)
+├── ca_profile.xml             # repository-level CA info — a non-empty <Profile> is a hard submission gate
 ├── scripts/                   # template self-checks, icon generation, static gate
 └── docs/                      # submission notes, pitfalls, migration guide
 ```
@@ -60,7 +60,7 @@ for the XML/YAML well-formedness pass, and skipping is not allowed.
 | Field | Why |
 |---|---|
 | `<Repository>` | It is the image users install. It points at `ghcr.io/meixu6693/dsh:latest`. |
-| `<TemplateURL>`, `<Icon>`, `<ReadMe>` | They point at files on this repository's `main` branch; CA and installed machines re-read them. A rename or a move breaks the catalogue entry. |
+| `<TemplateURL>`, `<Icon>`, `<ReadMe>` | They point at files on this repository's `main` branch; CA and installed machines re-read them. A rename/move needs the new URLs rolled out **and** the CA repository URL updated — GitHub's 301 only bridges the gap, and machines that already installed keep the copy from install time. |
 | `<Registry>` | Points at the GHCR package page. It follows wherever the package is linked. |
 | `<Support>` | CA requires a **forum thread** for a self-maintained container, not a GitHub issue tracker. |
 | `<Name>` | It is the container name on every machine that installs it. |

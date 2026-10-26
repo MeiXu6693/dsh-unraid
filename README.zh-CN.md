@@ -1,17 +1,27 @@
-<h1 align="center">DSH for Unraid</h1>
+<h1 align="center">MeiXu 的 Unraid 模板库</h1>
 
-<p align="center"><a href="https://forums.unraid.net/topic/200908-support-dsh-deepseek-harness-ai-coding-agent-in-your-browser/">Community Applications</a> 上的 DSH（<a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness</a>，浏览器里用的 AI 编程智能体）模板：一个容器、命令沙箱在 Unraid 内核上直接可用、装的插件跨更新存活、内置远程登录、跟随上游自动更新。</p>
+<p align="center">MeiXu 维护的 Unraid Community Applications 模板：每个应用一个 XML，镜像在各自仓库构建与发布。目前收录一个应用：<b>DSH</b>。</p>
 
 <p align="center"><a href="README.md">English</a> · <b>中文说明</b></p>
 
 <p align="center">
-  <a href="https://github.com/MeiXu6693/dsh-unraid/actions/workflows/validate.yml"><img src="https://github.com/MeiXu6693/dsh-unraid/actions/workflows/validate.yml/badge.svg" alt="validate"></a>
+  <a href="https://github.com/MeiXu6693/unraid-templates/actions/workflows/validate.yml"><img src="https://github.com/MeiXu6693/unraid-templates/actions/workflows/validate.yml/badge.svg" alt="validate"></a>
   <a href="https://github.com/MeiXu6693/dsh-docker/releases"><img src="https://img.shields.io/github/v/release/MeiXu6693/dsh-docker?label=image&color=orange" alt="image"></a>
   <img src="https://img.shields.io/badge/platforms-amd64%20%7C%20arm64-lightgrey" alt="platforms">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="license">
 </p>
 
 ---
+
+## 这个库里的模板
+
+| 应用 | 是什么 | 安装 | 支持 |
+|---|---|---|---|
+| **DSH** | DeepSeek Harness——浏览器里用的开源 AI 编程智能体，为 Unraid 打包。 | **Apps → DSH**，或把 [`templates/dsh.xml`](templates/dsh.xml) 粘进 *Docker → Add Container* | [Unraid 论坛帖](https://forums.unraid.net/topic/200908-support-dsh-deepseek-harness-ai-coding-agent-in-your-browser/) |
+
+## DSH for Unraid
+
+<p><a href="https://forums.unraid.net/topic/200908-support-dsh-deepseek-harness-ai-coding-agent-in-your-browser/">Community Applications</a> 上的 DSH（<a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness</a>，浏览器里用的 AI 编程智能体）模板：一个容器、命令沙箱在 Unraid 内核上直接可用、装的插件跨更新存活、内置远程登录、跟随上游自动更新。</p>
 
 ## 这个模板的优势
 

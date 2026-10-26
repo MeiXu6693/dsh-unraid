@@ -1,17 +1,27 @@
-<h1 align="center">DSH for Unraid</h1>
+<h1 align="center">MeiXu's Unraid Templates</h1>
 
-<p align="center">The Community Applications template for <a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness</a> — a coding agent you drive from the browser, running on your Unraid server. One container, a command sandbox that works on Unraid kernels, plugins that survive an update, remote sign-in built in, updated automatically from upstream.</p>
+<p align="center">Unraid Community Applications templates maintained by MeiXu — one XML per app, with each image built and released in its own repository. Currently one app: <b>DSH</b>.</p>
 
 <p align="center"><b>English</b> · <a href="README.zh-CN.md">中文说明</a></p>
 
 <p align="center">
-  <a href="https://github.com/MeiXu6693/dsh-unraid/actions/workflows/validate.yml"><img src="https://github.com/MeiXu6693/dsh-unraid/actions/workflows/validate.yml/badge.svg" alt="validate"></a>
+  <a href="https://github.com/MeiXu6693/unraid-templates/actions/workflows/validate.yml"><img src="https://github.com/MeiXu6693/unraid-templates/actions/workflows/validate.yml/badge.svg" alt="validate"></a>
   <a href="https://github.com/MeiXu6693/dsh-docker/releases"><img src="https://img.shields.io/github/v/release/MeiXu6693/dsh-docker?label=image&color=orange" alt="image"></a>
   <img src="https://img.shields.io/badge/platforms-amd64%20%7C%20arm64-lightgrey" alt="platforms">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="license">
 </p>
 
 ---
+
+## Templates in this repository
+
+| App | What it is | Install | Support |
+|---|---|---|---|
+| **DSH** | DeepSeek Harness — an open-source AI coding agent you drive from the browser, packaged for Unraid. | **Apps → DSH**, or paste [`templates/dsh.xml`](templates/dsh.xml) into *Docker → Add Container* | [Unraid forum thread](https://forums.unraid.net/topic/200908-support-dsh-deepseek-harness-ai-coding-agent-in-your-browser/) |
+
+## DSH for Unraid
+
+<p>The Community Applications template for <a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness</a> — a coding agent you drive from the browser, running on your Unraid server. One container, a command sandbox that works on Unraid kernels, plugins that survive an update, remote sign-in built in, updated automatically from upstream.</p>
 
 ## What you get
 

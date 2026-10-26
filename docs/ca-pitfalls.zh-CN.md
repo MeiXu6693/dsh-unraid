@@ -16,8 +16,8 @@
 | A3 | 每个应用条目必须有 `<Repository>`（Docker）或 `<PluginURL>`（插件） | 官方《Repository XML Format》 | ✅ `<Repository>` 指向 `ghcr.io/meixu6693/dsh:latest` |
 | A4 | 提交时要跑 **Validate / Scan**，官方另写"每次有意义的 XML 改动后都要重跑" | 官方《Submission Help》 | ⚠️ 那句只对**新提交**成立：已收录仓库会被 `/submit/new` 拒绝（回"already enabled … no action required"），模板改动由 CA 在下一次 feed 重建时自动重解析（2026-10-16 实测：02:00 CST 推送 → 04:11 CST 生效）。见 [ca-submission.md](ca-submission.zh-CN.md) |
 | A5 | **`:latest` 标签不存在会被拉黑**（实例：`ntop/ntopng is blacklisted with ":Latest tag does not exist"`） | 论坛 | ✅ 流水线**永远**同时推 `:latest` 与 `:<版本>`；不要改成只推版本号 |
-| A6 | **声明与实际不符会被下架**：Unspin 因 `PluginURL` 与 .plg 内声明不一致被 CA 移除，修好后**仍需 moderator 手工重新上架**，等了数天 | 论坛 | ⚠️ `<Repository>`/`<TemplateURL>`/`<Registry>`/`<Icon>` 一律指向稳定、真实、短期内不会迁移的位置；**镜像与仓库名一旦提交就不要改** |
-| A6b | **镜像路径不跟账号改名走。** 2026-10-26 实测：owner 从 `2220545672` 改成 `MeiXu6693`、本仓库全部引用都改了，但 GitHub 的重定向并不一致——`github.com/2220545672/…` 返回 301、`raw.githubusercontent.com/2220545672/…` 仍能给新内容，而 `ghcr.io/2220545672/dsh` 回 `manifest unknown`、它的包页面是 404。从 Apps 装的用户拿到的容器建不起来（[issue #2](https://github.com/MeiXu6693/dsh-unraid/issues/2)），而其它检查全是绿的。 | 本机实测 + issue #2 | ✅ `scripts/check-image.mjs` 现在每次闸门都向 GHCR 要 manifest（顺带覆盖 A5）；`main` 上的模板已指向新路径。⚠️ 改名**之前**装过的机器，`templates-user/my-DSH.xml` 里仍留着旧 URL（CA 安装时拷一份模板就不再看上游），这些用户得自己把 **Repository** 改回 `ghcr.io/meixu6693/dsh:latest`（README → 常见问题）。 |
+| A6 | **声明与实际不符会被下架**：Unspin 因 `PluginURL` 与 .plg 内声明不一致被 CA 移除，修好后**仍需 moderator 手工重新上架**，等了数天 | 论坛 | ⚠️ `<Repository>`/`<TemplateURL>`/`<Registry>`/`<Icon>` 一律指向稳定、真实、短期内不会迁移的位置；**镜像与仓库名一旦提交就不要改**（受控例外：在同一次窗口里把本文件、模板 URL 与 CA 的 Repository URL 一起改掉） |
+| A6b | **镜像路径不跟账号改名走。** 2026-10-26 实测：owner 从 `2220545672` 改成 `MeiXu6693`、本仓库全部引用都改了，但 GitHub 的重定向并不一致——`github.com/2220545672/…` 返回 301、`raw.githubusercontent.com/2220545672/…` 仍能给新内容，而 `ghcr.io/2220545672/dsh` 回 `manifest unknown`、它的包页面是 404。从 Apps 装的用户拿到的容器建不起来（[issue #2](https://github.com/MeiXu6693/unraid-templates/issues/2)），而其它检查全是绿的。 | 本机实测 + issue #2 | ✅ `scripts/check-image.mjs` 现在每次闸门都向 GHCR 要 manifest（顺带覆盖 A5）；`main` 上的模板已指向新路径。⚠️ 改名**之前**装过的机器，`templates-user/my-DSH.xml` 里仍留着旧 URL（CA 安装时拷一份模板就不再看上游），这些用户得自己把 **Repository** 改回 `ghcr.io/meixu6693/dsh:latest`（README → 常见问题）。 |
 | A7 | **`Mask="true"` 只影响 GUI 显示**：值照样传给容器、也照样存在模板文件里（实测：`Mask="true"` + `my-own-secret-99` → 容器拿到 `DSH_PASSWORD=my-own-secret-99`；模板里也仍是这个值）。⚠️ 此前本条曾写成"遮蔽会让变量丢失"，那是**我们自己的检查脚本**用 `printf "%.11s"` 截断 `DSH_PASSWORD`（12 字符）导致比较永不成立而看漏的，已订正 | 本机对照实验（Mask true/false 两次重建）+ 直接 `grep '^DSH_PASSWORD'` | ✅ **Password** 字段用 `Mask="true"`（界面圆点）且值只写在 `Default` 里；`scripts/check-template.mjs` 不再禁止 Mask，只在注释里记录这段教训 |
 | A8 | **Config 取值规则**：元素**文本非空时以文本为准**，**文本为空时回退 `Default`**。实测两次：端口字段文本 `0.0.0.0:8080` + Default `0.0.0.0:3082` → 容器真的绑到 **8080**；口令字段文本清空 + Default `12345678` → 容器真的拿到 **12345678** | 本机两次重建实测 | ✅ `scripts/check-template.mjs` 断言"文本要么为空、要么等于 Default"（不一致会让人看配置文件以为是一个值、容器里却是另一个值） |
 
@@ -57,12 +57,12 @@
 node scripts/check-template.mjs templates/dsh.xml
 
 # 2. 渲染一份"发布用"模板并再查一遍（release 资产就是这么生成的）
-node scripts/render-template.mjs --owner=meixu6693 --repo=dsh-unraid --tag=latest --out=/tmp/dsh.xml
+node scripts/render-template.mjs --owner=meixu6693 --repo=unraid-templates --tag=latest --out=/tmp/dsh.xml
 node scripts/check-template.mjs /tmp/dsh.xml
 
 # 3. 镜像匿名可拉 + 多架构
 curl -s "https://ghcr.io/token?scope=repository:meixu6693/dsh:pull&service=ghcr.io" | head -c 80
 
 # 4. 图标必须国内可达（raw 与 jsdelivr 都不行，见 docs/ca-submission.md）
-curl -sI "https://gh-proxy.com/https://raw.githubusercontent.com/MeiXu6693/dsh-unraid/main/templates/img/dsh.png" | head -1
+curl -sI "https://gh-proxy.com/https://raw.githubusercontent.com/MeiXu6693/unraid-templates/main/templates/img/dsh.png" | head -1
 ```

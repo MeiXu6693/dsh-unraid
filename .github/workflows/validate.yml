@@ -47,7 +47,7 @@ jobs:
           node scripts/check-template.mjs templates/dsh.xml
           # render-template.mjs is the fork helper (it substitutes owner/repo/tag);
           # the committed template is already rendered, which is what CA parses.
-          node scripts/render-template.mjs --owner=example --repo=dsh-unraid --tag=latest --out=/tmp/dsh.xml
+          node scripts/render-template.mjs --owner=example --repo=unraid-templates --tag=latest --out=/tmp/dsh.xml
           node scripts/check-template.mjs /tmp/dsh.xml
           python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('/tmp/dsh.xml'); print('rendered template is well-formed XML')"
           # The composed icon is committed; scripts/make-icon.mjs needs sharp, which CI

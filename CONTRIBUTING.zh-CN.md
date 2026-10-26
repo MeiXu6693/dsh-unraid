@@ -2,20 +2,20 @@
 
 # 维护者手册 —— Unraid 这一侧
 
-本仓库只负责 DSH 的 **Community Applications 模板**：`templates/dsh.xml`、图标、CA 仓库
-profile、CA 相关文档，以及检查它们的脚本。容器镜像由
-[MeiXu6693/dsh-docker](https://github.com/MeiXu6693/dsh-docker) 构建与发布；模板安装的就是
-它的 `:latest`。
+本仓库是 **MeiXu 的 Unraid 模板库**：`templates/` 下每个应用一个 Community
+Applications 模板，外加 CA 仓库 profile、文档与检查脚本。目前只收录 DSH；容器镜像由
+[MeiXu6693/dsh-docker](https://github.com/MeiXu6693/dsh-docker) 构建与发布，
+`templates/dsh.xml` 安装的就是它的 `:latest`。
 
 ## 仓库结构
 
 ```
 .
-├── templates/dsh.xml          # Community Applications 解析的文件（已是渲染后的成品）
-├── templates/img/dsh.png      # 模板与 CA 展示的图标
+├── templates/dsh.xml          # 每个应用一个 XML；Community Applications 解析的文件（已是渲染后的成品）
+├── templates/img/dsh.png      # 单应用图标，模板与 CA 展示
 ├── templates/img/src/         # 素材与商标说明
-├── icon.svg                   # 仓库图标（CA 目录结构要求；ca_profile.xml 指向它）
-├── ca_profile.xml             # CA 仓库信息——<Profile> 非空是硬性提交门槛
+├── icon.svg                   # 库图标（CA 目录结构要求；ca_profile.xml 指向它）
+├── ca_profile.xml             # 仓库级 CA 信息——<Profile> 非空是硬性提交门槛
 ├── scripts/                   # 模板自检、图标生成、静态闸门
 └── docs/                      # 提交说明、坑位清单、迁移指南
 ```
@@ -55,7 +55,7 @@ XML/YAML 结构校验，不允许跳过。
 | 字段 | 原因 |
 |---|---|
 | `<Repository>` | 它就是用户安装的镜像，指向 `ghcr.io/meixu6693/dsh:latest`。 |
-| `<TemplateURL>`、`<Icon>`、`<ReadMe>` | 指向本仓库 `main` 上的文件；CA 与已安装的机器都会去读。改名或挪位置会让目录条目失效。 |
+| `<TemplateURL>`、`<Icon>`、`<ReadMe>` | 指向本仓库 `main` 上的文件；CA 与已安装的机器都会去读。改名或挪位置时，必须同时铺开新 URL **并**更新 CA 的 Repository URL——GitHub 的 301 只能过渡，已安装的机器保留的是安装时那份快照。 |
 | `<Registry>` | 指向 GHCR 包页面，跟着包的链接关系走。 |
 | `<Support>` | CA 要求自维护容器用**论坛帖**，不是 GitHub issue。 |
 | `<Name>` | 它是每台安装机器上的容器名。 |

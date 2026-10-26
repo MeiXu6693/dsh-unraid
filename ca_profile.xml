@@ -6,12 +6,18 @@
   live in the repository root, and carry a non-empty Profile element (see
   ca.unraid.net -> Submit -> Docs -> Repository Information XML).
 
-  The support thread exists, so the Forum element below points at it. Keep it in
-  step with the Support field of every template in this repository.
+  This repository is a template library: it holds one XML per app under templates/.
+  This file describes the repository, not a single app. Keep the Profile
+  library-level and let each template carry its own <Support> thread.
+
+  <Forum> is the support thread; it was updated for the renamed repository on
+  2026-10-26. If a second app gets its own thread, keep this profile-level Forum
+  on a thread that covers the library, and point each template's <Support> at
+  that app's thread.
 -->
 <CommunityApplications>
-  <Profile>DSH（DeepSeek Harness，浏览器里用的开源 AI 编码智能体）在 Unraid 上的 Community Applications 模板：多架构镜像（amd64 / arm64）随上游发版自动重建，内置 bubblewrap 以适配没有 Landlock 的 Unraid 内核，并提供中英文安装文档、沙箱原理说明与从其它镜像迁移的步骤。容器内置 Caddy 反向代理、可选口令门禁与 ALLOWED_CLIENTS 白名单，以非 root 身份（`PUID`/`PGID`，默认 1000）运行。 | DSH (DeepSeek Harness), an open-source AI coding agent you drive from the browser, packaged for Unraid: a multi-arch image (amd64 / arm64) rebuilt automatically for each upstream release, with bubblewrap bundled for Unraid kernels that lack Landlock, plus installation documentation in Chinese and English, the sandbox rationale, and a migration guide. Support goes through the Unraid forum thread linked in this profile. The container bundles its reverse proxy, an optional password gate and an ALLOWED_CLIENTS allowlist, and runs unprivileged as `PUID`/`PGID` (1000 by default). | 支持请走本 profile 中链接的 Unraid 论坛支持帖。</Profile>
-  <Icon>https://gh-proxy.com/https://raw.githubusercontent.com/MeiXu6693/dsh-unraid/main/icon.svg</Icon>
-  <WebPage>https://github.com/MeiXu6693/dsh-unraid</WebPage>
+  <Profile>MeiXu 的 Unraid Community Applications 模板库：每个应用一个模板，镜像在各自的 GitHub 仓库构建与发布。目前收录 DSH（DeepSeek Harness，浏览器里用的开源 AI 编码智能体）：多架构镜像随上游发版自动重建，内置 bubblewrap 以适配没有 Landlock 的 Unraid 内核，并提供中英文安装文档与沙箱说明；容器内置 Caddy 反向代理、可选口令门禁与 ALLOWED_CLIENTS 白名单，以非 root 身份（PUID/PGID）运行。每个应用的支持请走其模板 Support 字段指向的论坛帖；库级支持入口见本 profile 的 Forum。 | MeiXu's Unraid Community Applications template library: one template per app, with each image built and released in its own GitHub repository. It currently ships DSH (DeepSeek Harness), an open-source AI coding agent you drive from the browser: a multi-arch image rebuilt automatically for each upstream release, with bubblewrap bundled for Unraid kernels that lack Landlock, plus installation and sandbox documentation in Chinese and English; the container bundles its reverse proxy, an optional password gate and an ALLOWED_CLIENTS allowlist, and runs unprivileged as PUID/PGID. Support for each app goes through the forum thread named in that template's Support field; the library-level support entry is the Forum link in this profile.</Profile>
+  <Icon>https://gh-proxy.com/https://raw.githubusercontent.com/MeiXu6693/unraid-templates/main/icon.svg</Icon>
+  <WebPage>https://github.com/MeiXu6693/unraid-templates</WebPage>
   <Forum>https://forums.unraid.net/topic/200908-support-dsh-deepseek-harness-ai-coding-agent-in-your-browser/</Forum>
 </CommunityApplications>

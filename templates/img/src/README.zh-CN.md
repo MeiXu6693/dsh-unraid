@@ -13,7 +13,7 @@
 
 本仓库是**社区打包**，与 DeepSeek（深度求索）及 Lime Technology（Unraid）**均无隶属、合作或授权关系**。图标把两个上游标记并列，仅用于说明"这是什么应用、跑在什么平台上"，不代表任何一方的背书。
 
-DSH 官方 [品牌素材使用规范](https://github.com/deepseek-ai/deepseek-harness/blob/master/BRAND_GUIDELINES.zh.md) 的要求是：描述性文字里可以如实说明与 DeepSeek Harness 的关系，但**项目名**建议使用缩写 **DSH**、避免直接使用完整商标。因此本仓库用 `dsh-unraid` / `dsh` 命名，描述里才出现 "DeepSeek Harness"。
+DSH 官方 [品牌素材使用规范](https://github.com/deepseek-ai/deepseek-harness/blob/master/BRAND_GUIDELINES.zh.md) 的要求是：描述性文字里可以如实说明与 DeepSeek Harness 的关系，但**项目名**建议使用缩写 **DSH**、避免直接使用完整商标。因此模板（以及它安装的应用条目）用 `dsh` 命名，仓库则是中性的模板库 `unraid-templates`，描述里才出现 "DeepSeek Harness"。
 
 如果任何一方要求调整，替换这两个文件并重跑 `node scripts/make-icon.mjs` 即可。
 

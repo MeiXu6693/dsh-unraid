@@ -16,9 +16,9 @@
   <Overview>DSH（DeepSeek Harness）是开源 AI 编码智能体：在浏览器里与它协作，读写你的项目、执行命令、管理模型与会话历史。本镜像为 Unraid 准备——自动跟随上游发版重建，内置命令沙箱所需的 bubblewrap，使它在没有 Landlock 的内核上也能正常执行命令，并集成 [dsh-remote-signin](https://github.com/MeiXu6693/dsh-remote-signin) 插件：在局域网、Tailscale 或反向代理后面，用 DeepSeek 账号登录也能正常走完（只在最后多一步粘贴，粘贴框会自己出现在页面上）。 容器内置 Caddy 反向代理与可选口令门禁（也可设为 none 交给你现有的 SSO），以非 root 身份（PUID/PGID，默认 1000）运行。 | DSH (DeepSeek Harness) is an open-source AI coding agent you drive from the browser: it works on your projects, runs commands and keeps your session history. Built for Unraid — rebuilt automatically for every upstream release, with the bubblewrap sandbox bundled so commands work even on kernels without Landlock, and with the [dsh-remote-signin](https://github.com/MeiXu6693/dsh-remote-signin) plugin integrated: a DeepSeek account sign-in also works over the LAN, Tailscale or behind a reverse proxy (it adds one paste, into a box that appears in the page). The container bundles its own reverse proxy and an optional password gate (or set none and delegate to your SSO), and runs unprivileged as a non-root uid (PUID/PGID, 1000 by default).</Overview>
   <Category>Tools:</Category>
   <WebUI>http://[IP]:[PORT:8080]</WebUI>
-  <TemplateURL>https://raw.githubusercontent.com/MeiXu6693/dsh-unraid/main/templates/dsh.xml</TemplateURL>
-  <ReadMe>https://gh-proxy.com/https://raw.githubusercontent.com/MeiXu6693/dsh-unraid/main/README.md</ReadMe>
-  <Icon>https://gh-proxy.com/https://raw.githubusercontent.com/MeiXu6693/dsh-unraid/main/templates/img/dsh.png</Icon>
+  <TemplateURL>https://raw.githubusercontent.com/MeiXu6693/unraid-templates/main/templates/dsh.xml</TemplateURL>
+  <ReadMe>https://gh-proxy.com/https://raw.githubusercontent.com/MeiXu6693/unraid-templates/main/README.md</ReadMe>
+  <Icon>https://gh-proxy.com/https://raw.githubusercontent.com/MeiXu6693/unraid-templates/main/templates/img/dsh.png</Icon>
   <ExtraParams>--security-opt seccomp=unconfined --security-opt systempaths=unconfined --restart=unless-stopped</ExtraParams>
   <PostArgs/>
   <CPUset/>
