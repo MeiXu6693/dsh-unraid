@@ -27,8 +27,12 @@ ALLOW_MISSING_PYTHON=1 bash scripts/check-static.sh   # 整套闸门（本机没
 node scripts/check-template.mjs templates/dsh.xml     # 只查模板
 node scripts/check-repo.mjs                           # CA 仓库结构 + 占位符扫描
 node scripts/check-image-contract.mjs templates/dsh.xml
+node scripts/check-image.mjs templates/dsh.xml        # 模板装的镜像在 ghcr.io 上还存不存在
 node scripts/make-icon-svg.mjs --out=icon.svg && git diff --exit-code icon.svg   # 图标必须可复现
 ```
+
+`check-image.mjs` 是唯一需要联网的检查：它向 GHCR 要 manifest——2026-10-25 那次事故里，别的检查
+全绿，唯独这一件事坏了（issue #2）。断网时降级为警告，在 GitHub runner 上是硬断言。
 
 CI 里 `check-static.sh` **不带** `ALLOW_MISSING_PYTHON`：那里必须有 python3 才能做
 XML/YAML 结构校验，不允许跳过。

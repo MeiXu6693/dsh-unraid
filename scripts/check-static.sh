@@ -88,6 +88,13 @@ echo '== the template still matches the image it installs =='
 node scripts/check-image-contract.mjs templates/dsh.xml
 
 echo
+echo '== the image the template installs exists =='
+# Every check above reads structure, and a dead registry path has the same shape as a
+# live one: after the 2026-10-24 account rename this gate was fully green while
+# ghcr.io/2220545672/dsh answered "manifest unknown" and nobody could install (issue #2).
+node scripts/check-image.mjs templates/dsh.xml
+
+echo
 echo '== icon reproducibility =='
 committed="$(mktemp)"
 trap 'rm -f "${committed}"' EXIT

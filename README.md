@@ -114,6 +114,7 @@ everything else you want to add.
 | The browser gets `403` | Your address is not in **Allowed Clients**. |
 | “dsh web authentication required; reopen the URL printed by dsh web” | **Just reload the page** — the container renews a stale session cookie by itself (also possible by hand: `http://<host>:<port>/renew`). |
 | Updated, but nothing changed | Unraid recreates a container only when the image digest changes — use **force update**. |
+| `Page not found` when you open the image, or the container will not build | The GitHub account was renamed on 2026-10-24 and **the old image path is gone for good**: `ghcr.io/2220545672/dsh` now answers `manifest unknown` and its package page is a 404 (repository URLs redirect after a rename; registry paths do not). The template on `main` already installs `ghcr.io/meixu6693/dsh:latest` — the Community Applications catalogue can keep showing the old address until its next feed rebuild, so refresh the Apps page, or skip CA and paste [`templates/dsh.xml`](templates/dsh.xml) into **Docker → Add Container**. **Container already installed?** Docker tab → the container → *Edit* → set **Repository** to `ghcr.io/meixu6693/dsh:latest` → Apply. `/data` and `/workspace` are untouched. |
 | Page never finishes loading | **Public URL** must match the address you actually open (scheme + host, no path). `docker logs <container> \| head -30` prints the mode it chose. |
 
 More troubleshooting (the sign-in paste panel, Caddy/DSH internals, `docker inspect`

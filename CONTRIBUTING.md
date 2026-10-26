@@ -28,8 +28,13 @@ ALLOW_MISSING_PYTHON=1 bash scripts/check-static.sh   # the whole gate (this hos
 node scripts/check-template.mjs templates/dsh.xml     # the template alone
 node scripts/check-repo.mjs                           # CA repository layout + placeholder sweep
 node scripts/check-image-contract.mjs templates/dsh.xml
+node scripts/check-image.mjs templates/dsh.xml        # does the image the template installs still exist on ghcr.io
 node scripts/make-icon-svg.mjs --out=icon.svg && git diff --exit-code icon.svg   # icon must be reproducible
 ```
+
+`check-image.mjs` is the only check that needs the network — it asks GHCR for the manifest, which
+is the one thing that silently broke on 2026-10-25 while every other check stayed green (issue #2).
+Offline it degrades to a warning; on GitHub's runners it is real.
 
 In CI `check-static.sh` runs without `ALLOW_MISSING_PYTHON`: python3 is required there
 for the XML/YAML well-formedness pass, and skipping is not allowed.

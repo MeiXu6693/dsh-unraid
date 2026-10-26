@@ -94,6 +94,7 @@ docker exec -u <PUID> <容器名> dsh plugin --profile web add github:owner/repo
 | 浏览器拿到 `403` | 你的地址不在 **Allowed Clients** 里。 |
 | 页面提示 “dsh web authentication required; reopen the URL printed by dsh web” | **刷新页面即可**——容器会自己把失效的会话 Cookie 换新（也可手动打开 `http://<主机>:<端口>/renew`）。 |
 | 更新了却没变化 | Unraid 只在镜像 digest 变化时重建容器——用 **force update**。 |
+| 镜像报 `Page not found`、或容器建不起来 | 2026-10-24 改过 GitHub 用户名，**旧镜像地址已经彻底失效**：`ghcr.io/2220545672/dsh` 现在回 `manifest unknown`，它的包页面是 404（仓库地址改名后会跳转，**镜像路径不会**）。`main` 上的模板已经指向 `ghcr.io/meixu6693/dsh:latest`；Community Applications 的目录条目要到下一次 feed 重建才会更新，所以先刷新 Apps 页，或者干脆跳过 CA、把 [`templates/dsh.xml`](templates/dsh.xml) 的内容粘进 **Docker → Add Container**。**容器已经装过？** Docker 页 → 该容器 → *Edit* → 把 **Repository** 改成 `ghcr.io/meixu6693/dsh:latest` → Apply，`/data` 与 `/workspace` 都不受影响。 |
 | 页面一直转圈 | **Public URL** 必须与你实际打开的地址一致（协议 + 主机，不带路径）。`docker logs <容器名> \| head -30` 会打印它选定的模式。 |
 
 更多排障（登录粘贴面板、Caddy/DSH 内部、`docker inspect` 细节）见
