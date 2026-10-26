@@ -53,7 +53,7 @@
 
 Full descriptions of every variable — and of the security model behind them — are in the project documentation: [settings and environment variables](https://github.com/MeiXu6693/dsh-docker#settings-you-may-need) and [the security model](https://github.com/MeiXu6693/dsh-docker/blob/main/docs/security.md).
 
-**PUID, PGID, UMASK, the two paths and the network/auth details are under "Show more settings"** — the default install only asks for the port and password.
+**PUID, PGID, UMASK, the Data Directory and the proxy/sign-in details are under "Show more settings"** — the default install shows WebUI Port, Username, Password and Workspace Directory.
 
 | Field | Default | What it does |
 |---|---|---|
@@ -67,7 +67,6 @@ Full descriptions of every variable — and of the security model behind them �
 | Authentication Mode | `builtin` | `builtin` = the container's own password gate; `none` = an authenticating proxy or SSO in front (do not stack two logins). |
 | Trusted Proxy CIDRs | empty | Only behind a reverse proxy: read `X-Forwarded-For` from these peers so the allowlist sees the real client address. |
 | Public URL | empty | The origin a reverse proxy serves (`https://dsh.example.com`); empty for a trusted LAN. |
-| Trusted Hosts | empty | Extra accepted authorities; only used with `Public URL`. |
 | Remote Sign-in | `on` | DeepSeek **account** sign-in from a remote browser (one paste step). `off` = upstream behaviour. |
 | Time Zone | `Asia/Shanghai` | Container time zone. |
 | Extra Parameters | `--security-opt seccomp=unconfined --security-opt systempaths=unconfined --restart=unless-stopped` | **Do not remove the two `--security-opt` values** — see below. |

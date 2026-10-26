@@ -45,7 +45,7 @@
 
 每个变量的完整说明（以及它背后的安全模型）见项目文档：[设置与环境变量](https://github.com/MeiXu6693/dsh-docker/blob/main/README.zh-CN.md#可能会用到的设置) 与 [安全模型](https://github.com/MeiXu6693/dsh-docker/blob/main/docs/security.zh-CN.md)。
 
-**PUID、PGID、UMASK、两个路径以及网络/认证细节都在「显示更多设置」里**——默认安装只填端口和口令。
+**PUID、PGID、UMASK、数据目录以及代理/登录细节在「显示更多设置」里**——默认安装显示端口、用户名、口令和工作目录。
 
 | 字段 | 默认 | 作用 |
 |---|---|---|
@@ -59,7 +59,6 @@
 | Authentication Mode | `builtin` | `builtin` = 容器自带口令门禁；`none` = 交给前面的反向代理 / SSO（别叠两层登录）。 |
 | Trusted Proxy CIDRs | 空 | 仅当前面有反向代理：只对这些来源读取 `X-Forwarded-For`，让白名单看到真实客户端地址。 |
 | Public URL | 空 | 反向代理对外提供的 origin（`https://dsh.example.com`）；纯内网留空。 |
-| Trusted Hosts | 空 | 额外可信 authority；只在设置了 Public URL 时生效。 |
 | Remote Sign-in | `on` | 远程浏览器用 DeepSeek **账号**登录（多一步粘贴）。`off` = 上游行为。 |
 | Time Zone | `Asia/Shanghai` | 容器时区。 |
 | Extra Parameters | `--security-opt seccomp=unconfined --security-opt systempaths=unconfined --restart=unless-stopped` | **不要删掉那两个 `--security-opt`**，原因见下。 |
