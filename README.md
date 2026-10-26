@@ -45,7 +45,7 @@
 
 ## First five minutes
 
-1. **Change the password.** The template ships `12345678`, which is public knowledge — Docker tab → the container → *Edit* → **Password** → Apply. (Cleared, the container generates one and prints it once: `docker logs <container>`.)
+1. **Change the password.** The template ships `12345678`, which is public knowledge — Docker tab → the container → *Edit* → **Password** → Apply. (The template always supplies the default 12345678; builtin mode without a password refuses to start.)
 2. **Point it at your project.** The agent works in `/workspace` (default `appdata/dsh/workspace`).
 3. **Add a DeepSeek API key** — *Add API key* in the settings panel. A DeepSeek **account** also works from any browser: the login tab ends on a dead `127.0.0.1` page and a paste panel appears in the DSH page by itself — see the image's [docs/remote-signin.md](https://github.com/MeiXu6693/dsh-docker/blob/main/docs/remote-signin.md).
 
