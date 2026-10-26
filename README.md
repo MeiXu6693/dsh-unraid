@@ -53,7 +53,7 @@
 
 Full descriptions of every variable — and of the security model behind them — are in the project documentation: [settings and environment variables](https://github.com/MeiXu6693/dsh-docker#settings-you-may-need) and [the security model](https://github.com/MeiXu6693/dsh-docker/blob/main/docs/security.md).
 
-**PUID, PGID, UMASK, the Data Directory and the proxy/sign-in details are under "Show more settings"** — the default install shows WebUI Port, Username, Password and Workspace Directory.
+**PUID, PGID, UMASK, the Data Directory and the proxy/sign-in details are under "Show more settings"** — the default install shows WebUI Port, Username, Password, Authentication Mode and Workspace Directory.
 
 | Field | Default | What it does |
 |---|---|---|
